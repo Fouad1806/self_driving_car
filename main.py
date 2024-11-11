@@ -42,8 +42,9 @@ class Car(pygame.sprite.Sprite):
         super().__init__()
 
         # Define the car
-        self.image = pygame.image.load("car.png")
-        self.image = pygame.transform.scale(self.image, (CAR_SIZE, CAR_SIZE))
+        self.original_image = pygame.image.load("car.png")
+        self.original_image = pygame.transform.scale(self.original_image, (CAR_SIZE, CAR_SIZE))
+        self.image = self.original_image  # The rotated image for display
 
         self.game_map = game_map
 
@@ -51,6 +52,13 @@ class Car(pygame.sprite.Sprite):
         self.rect.center = self.get_black_spawn_position()
 
         self.speed = 1
+        self.angle = 0  # Initialize angle
+
+    def rotate(self, angle):
+        # Rotate the car and update the rect center to maintain position
+        self.angle = angle
+        self.image = pygame.transform.rotate(self.original_image, self.angle)
+        self.rect = self.image.get_rect(center=self.rect.center)
 
     def get_black_spawn_position(self):
         width, height = self.game_map.get_size()
@@ -109,30 +117,30 @@ class Car(pygame.sprite.Sprite):
         # Check each direction and only move if the direction is clear
         if keys[pygame.K_LEFT] and self.can_move('left'):
             self.rect.x -= self.speed
+            self.rotate(90)  # Face left
             moved = True
         elif keys[pygame.K_LEFT]:
-            print("Crash detected: Blocked moving left")
             blocked_left = True
 
         if keys[pygame.K_RIGHT] and self.can_move('right'):
             self.rect.x += self.speed
+            self.rotate(-90)  # Face right
             moved = True
         elif keys[pygame.K_RIGHT]:
-            print("Crash detected: Blocked moving right")
             blocked_right = True
 
         if keys[pygame.K_UP] and self.can_move('up'):
             self.rect.y -= self.speed
+            self.rotate(0)  # Face up
             moved = True
         elif keys[pygame.K_UP]:
-            print("Crash detected: Blocked moving up")
             blocked_up = True
 
         if keys[pygame.K_DOWN] and self.can_move('down'):
             self.rect.y += self.speed
+            self.rotate(180)  # Face down
             moved = True
         elif keys[pygame.K_DOWN]:
-            print("Crash detected: Blocked moving down")
             blocked_down = True
 
         # Check if the car is in a non-track area and reset if so
