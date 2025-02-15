@@ -88,12 +88,4 @@ activation_options = tanh sigmoid relu → Activation functions used in the neur
 - **No track found (random spawning issue)**: Ensure the track is black on a white background. The car spawns on black pixels.
 - **Monotonous movement or spinning**: Modify the reward/punishment system in `calculate_reward()` in `main.py`.
 
-## License
-This project is licensed under the MIT License. See `LICENSE` for details.
-
-## Contributions
-Feel free to contribute by submitting pull requests or reporting issues!
-
-## Contact
-For questions or suggestions, open an issue or reach out via GitHub!
 
